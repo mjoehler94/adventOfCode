@@ -18,7 +18,7 @@ What is the sum of the fuel requirements for all of the modules on your spacecra
 """
 
 # libraries
-import pandas as pd
+# import pandas as pd
 
 
 def calculate_fuel_needed(list_of_masses):
@@ -73,9 +73,9 @@ def main():
     test_values = [12, 14, 1969, 100756]
     print(calculate_fuel_needed(test_values))
 
-    real_values = get_inputs('input_raw.csv')
+    real_values = get_inputs('data/input1.csv')
     # print(real_values[:5])
-    print("Module Fuel:",calculate_fuel_needed(real_values))
+    print("Module Fuel:", calculate_fuel_needed(real_values))
     # print("Length:", len(real_values))
 
     # df = pd.read_csv('input.csv')
