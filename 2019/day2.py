@@ -1,5 +1,6 @@
 # day 2 ---------------------------------------
 
+
 def get_inputs(path):
     """
     reads in data and stores it to a list which is then returned
