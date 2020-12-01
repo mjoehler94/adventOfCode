@@ -101,4 +101,3 @@ class IntCodeComputer(object):
                 print("Error: Invalid IntCode")
                 break
         return
-
