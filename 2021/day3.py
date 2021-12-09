@@ -50,10 +50,6 @@ print()
 
 
 print("Part 2 Answer")
-oxygen = 0
-co2 = 0
-
-
 
 def get_most_common_bit(vals, position):
     count = 0
@@ -64,22 +60,38 @@ def get_most_common_bit(vals, position):
 def filter_numbers(vals, position, value):
     return [v for v in vals if v[position] == value]
 
-# print([get_most_common_bit(vals, x) for x in range(len(vals[0]))])
-
-
 
 def get_rating(vals, most_common=True):
     temp_vals = vals.copy()
     position = 0
     count = 0
+    iter = 0
         
     while(len(temp_vals) > 1):
         for v in temp_vals:
             count += int(v[position])
-        if check == '1':
-            pass
-
+        if most_common:
+            if count >= len(temp_vals) / 2:
+                temp_vals = [x for x in temp_vals if x[position] == '1']
+            else:
+                temp_vals = [x for x in temp_vals if x[position] == '0']
+        else:
+            if count >= len(temp_vals) / 2:
+                temp_vals = [x for x in temp_vals if x[position] == '0']
+            else:
+                temp_vals = [x for x in temp_vals if x[position] == '1']
+        position += 1
+        count = 0
+        # iter += 1
+        # print(iter)
 
     return binaryToDecimal(*temp_vals)
+
+oxygen = get_rating(vals, True)
+co2 = get_rating(vals, False)
+
+print(oxygen, co2, oxygen * co2)
+
+print("Done")
 
 
