@@ -3,8 +3,8 @@ with open("data/day4.txt") as f:
     numbers = f.readline()
     boards = f.read()
 
-# numbers = [int(x) for x in numbers.split(',')]
-print(numbers)
+numbers = [int(x) for x in numbers.split(',')]
+print(numbers[:10])
 # print(boards[:153])
 
 # print(boards.split())
@@ -39,34 +39,48 @@ def score_board(numbers, board):
     while(position < len(board)):
         row = board[position:position + step]
         if all([num in numbers for num in row]):
-            board_score = numbers[:-1] * sum([x for x in board if x not in numbers])
+            board_score = numbers[-1] * sum([x for x in board if x not in numbers])
             break
         else:
             position += step
-            
-
 
     # check cols
     position = 0
     while(not board_score and position < step):
         col = board[position::step]
         if all([num in numbers for num in col]):
-            board_score = numbers[:-1] * sum([x for x in board if x not in numbers])
+            board_score = numbers[-1] * sum([x for x in board if x not in numbers])
             break
         else:
             position += 1
-
+    # print(type(numbers[-1]), numbers[-1])
     return board_score
 
 # solve part 1
-
-# for each number called check all boards for winners
-for i in range(1,len(numbers)):
-    for bnum, board in board_dict.items():
-        score = score_board(numbers[:i],board)
-        if score:
-            print(score)
-            break
+def part1(numbers, board_dict):
+    # for each number called check all boards for winners
+    for i in range(1,len(numbers)):
+        for bnum, board in board_dict.items():
+            score = score_board(numbers[:i],board)
+            if score:
+                print(bnum, i)
+                print(score)
+                return
+part1(numbers, board_dict)
 print("Done")
+
+
+
+# my_num = numbers[:22][-1]
+# my_board = board_dict[11]
+
+# print(numbers[:22])
+# print()
+# print(my_num)
+# print(my_board)
+
+# scorables = [x for x in my_board if x not in numbers[:22]]
+# print(sum(scorables))
+# print(my_num * sum(scorables))
 
 
