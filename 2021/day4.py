@@ -26,8 +26,7 @@ def make_boards(raw_boards):
     
     return board_dict
 
-board_dict = make_boards(boards)
-# print(board_dict)
+
 
 # write function to check if solved
 def score_board(numbers, board):
@@ -57,6 +56,10 @@ def score_board(numbers, board):
     return board_score
 
 # solve part 1
+print("Part 1")
+board_dict = make_boards(boards)
+# print(board_dict)
+
 def part1(numbers, board_dict):
     # for each number called check all boards for winners
     for i in range(1,len(numbers)):
@@ -67,20 +70,39 @@ def part1(numbers, board_dict):
                 print(score)
                 return
 part1(numbers, board_dict)
-print("Done")
+print("Done\n")
 
 
+# part 2
+# which board will win last and what is it's score
+def part2(numbers, boards):
+    # for each board print winning position, and score
+    boards = list(boards.values())
+    score_of_last_board = 0
+    max_turns_to_win = 0
+    for i, b in enumerate(boards):
+        for n in range(1,len(numbers)):
+            score = 0
+            score = score_board(numbers[:n], b)
+            # print(f"board: {i}, number_position: {n}, score: {score}")
+            if score:
+                if n > max_turns_to_win:
+                    # print(i, n)
+                    max_turns_to_win = n
+                    score_of_last_board = score
+                break
+    # print(b)
+    # print(max_turns_to_win)
+    # print(score_of_last_board)
+    return score_of_last_board
+                
 
-# my_num = numbers[:22][-1]
-# my_board = board_dict[11]
 
-# print(numbers[:22])
-# print()
-# print(my_num)
-# print(my_board)
+print("Part 2")
+# print(len(numbers))
+# print(len(board_dict.values()))
+p2 = part2(numbers, board_dict)
 
-# scorables = [x for x in my_board if x not in numbers[:22]]
-# print(sum(scorables))
-# print(my_num * sum(scorables))
-
+print(p2)
+print('Done')
 
