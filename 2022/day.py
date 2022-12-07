@@ -6,12 +6,13 @@ def main():
 
     total = 0
     total2 = 0        
+    
+    # solve 1
     for item in pi:
-        # solve 1
         pass
     
+    # solve 2
     for item in pi:
-        # solve 2
         pass
 
 
