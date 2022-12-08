@@ -3,6 +3,11 @@ def main():
     day = 
     with open(f"puzzle_inputs/day{day}.txt") as f:
         pi = [x.strip() for x in f.readlines()]
+        
+        
+    samp = """"""
+    print(len(pi))
+    print(pi[:5])
 
     total = 0
     total2 = 0        
