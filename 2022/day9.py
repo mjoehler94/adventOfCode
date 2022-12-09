@@ -1,54 +1,3 @@
-class Grid:
-    def __init__(self) -> None:
-        self.head = {"x": 0, "y": 0}
-        self.tail = {"x": 0, "y": 0}
-        self.tail_path = [str(self.tail)]
-        self.p1 = None
-
-    def do_step(self, direction, dist):
-        if direction == "R":
-            for i in range(dist):
-                self.head["x"] += 1
-                self.update_tail()
-        elif direction == "U":
-            for i in range(dist):
-                self.head["y"] += 1
-                self.update_tail()
-
-        elif direction == "L":
-            for i in range(dist):
-                self.head["x"] -= 1
-                self.update_tail()
-        elif direction == "D":
-            for i in range(dist):
-                self.head["y"] -= 1
-                self.update_tail()
-
-    def update_tail(self):
-        x_diff = abs(self.head["x"] - self.tail["x"])
-        y_diff = abs(self.head["y"] - self.tail["y"])
-        if x_diff + y_diff > 2:
-            # move diagonally
-            self.tail["x"] += 1 if self.head["x"] > self.tail["x"] else -1
-            self.tail["y"] += 1 if self.head["y"] > self.tail["y"] else -1
-        elif x_diff > 1:
-            # move horizontally
-            self.tail["x"] += 1 if self.head["x"] > self.tail["x"] else -1
-        elif y_diff > 1:
-            # move vertically
-            self.tail["y"] += 1 if self.head["y"] > self.tail["y"] else -1
-
-        self.tail_path.append(str(self.tail))
-
-    def part1(self, pi):
-        for x in pi:
-            direction = x[0]
-            dist = int(x[1])
-            self.do_step(direction, dist)
-
-        self.p1 = len(set(self.tail_path))
-
-
 class Knot:
     def __init__(self, tail=None) -> None:
         self.x = 0
@@ -99,11 +48,13 @@ class Knot:
         return f"(x:{self.x}, y:{self.y})"
 
     def run(self, pi):
-        # this function exectur
         for x in pi:
             direction = x[0]
             dist = int(x[1])
             self.do_move(direction, dist)
+
+    def get_unique_places(self):
+        return len(set(self.path))
 
 
 def main():
@@ -122,20 +73,18 @@ def main():
         R 2"""
     # pi = [x.strip().split() for x in samp.split("\n")]
 
-    # print(len(pi))
-    # print(pi[:10])
-
-    total = 0
-    total2 = 0
-
     # solve 1
-    p1 = Grid()
-    p1.part1(pi)
-    # print(*p1.tail_path, sep="\n")
-    print(p1.p1)
+    # initialize knots
+    n_knots = 2
+    knots = [Knot() for i in range(n_knots)]
+    for i in range(n_knots - 1):
+        knots[i].tail = knots[i + 1]
 
-    print()
-    # print(p1.tail_path)
+    head = knots[0]
+    head.run(pi)
+
+    tail = knots[-1]
+    print(tail.get_unique_places())
 
     # solve 2
     samp2 = """R 5
@@ -148,8 +97,7 @@ def main():
         U 20"""
 
     # pi = [x.strip().split() for x in samp2.split("\n")]
-    print(pi[:5])
-    print()
+    # print(pi[:5])
 
     n_knots = 10
     knots = [Knot() for i in range(n_knots)]
@@ -157,19 +105,10 @@ def main():
         knots[i].tail = knots[i + 1]
 
     head = knots[0]
-    tail = knots[-1]
     head.run(pi)
 
-    print(*knots)
-    print([knot.tail for knot in knots])
-    print()
-    print(tail.path)
-
-    print(len(set(tail.path)))
-
-    #
-
-    # now there are 10 total knots 1 head and 9 tails where each tail is the head for the tail after itself
+    tail = knots[-1]
+    print(tail.get_unique_places())
 
 
 if __name__ == "__main__":
