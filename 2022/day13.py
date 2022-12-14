@@ -1,50 +1,40 @@
 import ast
+from functools import cmp_to_key
 
 
 def compare(left, right):
     # if both are ints
     if isinstance(left, int) and isinstance(right, int):
-        print("ints", left, right)
-        if right > left:
-            return False
-        elif left < right:
-            return True
-
-        # if equal continue comparing other elements
+        if left < right:
+            return -1
+        elif left == right:
+            return 0
         else:
-            print("equal int")
-            # return True
+            return 1
     # both are lists
     elif isinstance(left, list) and isinstance(right, list):
-        print("lists", left, right)
         # get lengths
         llen = len(left)
         rlen = len(right)
-        is_left_shorter = llen < rlen
-        is_right_shorter = llen > rlen
-
-        for i in range(min(llen, rlen)):
-            return compare(left[i], right[i])
-
-        # if left is shorter then return true else return false
-        if is_left_shorter:
-            return True
-        elif is_right_shorter:
-            return False
+        i = 0
+        while i < llen and i < rlen:
+            c = compare(left[i], right[i])
+            if c == -1:
+                return -1
+            if c == 1:
+                return 1
+            i += 1
+        if i == llen and i < rlen:
+            return -1
+        elif i == rlen and i < llen:
+            return 1
         else:
-            print("same")
-            return True
-
+            return 0
     # exactly one is an int
-    else:
-        print("one", left, right, type(left), type(right))
-        if isinstance(left, int) and isinstance(right, list):
-            left = list(left)
-            return compare(left, right)
-        elif isinstance(left, list) and isinstance(right, int):
-            right = list(right)
-            return compare(left, right)
-    # return True
+    elif isinstance(left, int) and isinstance(right, list):
+        return compare([left], right)
+    elif isinstance(left, list) and isinstance(right, int):
+        return compare(left, [right])
 
 
 def main():
@@ -54,44 +44,54 @@ def main():
         # pi = [x.strip() for x in f.readlines()]
         pi = [x.split("\n") for x in f.read().split("\n\n")]
 
-    samp = [
-        [1, 1, 3, 1, 1],
-        [1, 1, 5, 1, 1],
-        [[1], [2, 3, 4]],
-        [[1], 4],
-        [9],
-        [[8, 7, 6]],
-        [[4, 4], 4, 4],
-        [[4, 4], 4, 4, 4],
-        [7, 7, 7, 7],
-        [7, 7, 7],
-        [],
-        [3],
-        [[[]]],
-        [[]],
-        [1, [2, [3, [4, [5, 6, 7]]]], 8, 9],
-        [1, [2, [3, [4, [5, 6, 0]]]], 8, 9],
-    ]
-    print(len(pi))
-    # print(pi[:5])
+    samp = """[1,1,3,1,1]
+        [1,1,5,1,1]
+
+        [[1],[2,3,4]]
+        [[1],4]
+
+        [9]
+        [[8,7,6]]
+
+        [[4,4],4,4]
+        [[4,4],4,4,4]
+
+        [7,7,7,7]
+        [7,7,7]
+
+        []
+        [3]
+
+        [[[]]]
+        [[]]
+
+        [1,[2,[3,[4,[5,6,7]]]],8,9]
+        [1,[2,[3,[4,[5,6,0]]]],8,9]"""
+
+    # pi = [x.split("\n") for x in samp.split("\n\n")]
 
     # solve 1
-    correct_inds = []
-    l = samp[0]
-    r = samp[1]
-    print(l, r)
-    print(compare(samp[0], samp[1]))
+    my_sum = 0
 
-    # for item in pi:
-    #     # print(item[0])
-    #     left = ast.literal_eval(item[0])
-    #     right = ast.literal_eval(item[0])
-    #     print(left)
-    #     pass
+    for i, packet in enumerate(pi):
+        left = eval(packet[0])
+        right = eval(packet[1])
+        if compare(left, right) == -1:
+            my_sum += i + 1
+    print(my_sum)
 
     # solve 2
+    packets = [
+        [[2]],
+        [[6]],
+    ]
     for item in pi:
-        pass
+        for packet in item:
+            packets.append(eval(packet))
+    packets = sorted(packets, key=cmp_to_key(lambda left, right: compare(left, right)))
+    decoder1 = packets.index([[2]]) + 1
+    decoder2 = packets.index([[6]]) + 1
+    print(decoder1 * decoder2)
 
 
 if __name__ == "__main__":
